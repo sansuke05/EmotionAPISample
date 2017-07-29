@@ -124,9 +124,12 @@ public class ConnectToEmotionAPI extends AsyncTask<Void, Void, JSONObject> {
     protected void onPostExecute(JSONObject result) {
         super.onPostExecute(result);
 
-        String str = "";
+        JSONObject jsonData;
+        String[] str = new String[2];
         try {
-            str = result.getJSONObject("scores").getString("happiness");
+            jsonData = result.getJSONObject("scores");
+            str[0] = jsonData.getString("happiness");
+            str[1] = jsonData.getString("anger");
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -134,10 +137,12 @@ public class ConnectToEmotionAPI extends AsyncTask<Void, Void, JSONObject> {
 
         Log.d("EmotionAPI","happiness score: " + str);
 
-        if (isSmile(str)) {
-            main_.emotion_txt.setText("素敵な笑顔です");
+        if (isSmile(str[0])) {
+            main_.emotion_txt.setText("素敵な笑顔です！");
+        } else if (isAnger(str[1])) {
+            main_.emotion_txt.setText("そんなに怒らないでくださいよ~");
         } else {
-            main_.emotion_txt.setText("笑顔ではありません");
+            main_.emotion_txt.setText("つまんないです。何かリアクションしてください");
         }
 
         if (progressDialog_.isShowing()) {
@@ -149,6 +154,13 @@ public class ConnectToEmotionAPI extends AsyncTask<Void, Void, JSONObject> {
     }
 
     public boolean isSmile(String strValue){
+
+        double value = Double.parseDouble(strValue);
+        if (value > 0.5) return true;
+        else return false;
+    }
+
+    public boolean isAnger(String strValue){
 
         double value = Double.parseDouble(strValue);
         if (value > 0.5) return true;
