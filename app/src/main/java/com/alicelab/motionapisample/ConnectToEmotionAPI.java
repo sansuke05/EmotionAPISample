@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +52,8 @@ public class ConnectToEmotionAPI extends AsyncTask<Void, Void, JSONObject> {
         HttpURLConnection con = null;
         URL url = null;
         String urlStr = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize";
-        String key = "a15cbe969cd14719b199b57d4a4c57c6";
+        Resources res = main_.getResources();
+        String key = res.getString(R.string.api_key);
         DataOutputStream os = null;
         BufferedReader reader;
         JSONObject json = null;
